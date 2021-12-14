@@ -8,7 +8,8 @@ const GlobalStyle = createGlobalStyle`
   font-size: 16px;
 }
 body {
-    background-color: ${({theme}) => theme.colors.background};
+  font-family: 'Roboto', sans-serif;
+  background-color: ${({theme}) => theme.colors.background};
 }
 input, button, textarea, select {
   font-family: 'Roboto', sans-serif;
@@ -34,6 +35,7 @@ a {
   font-size: 1.5rem;
   line-height: 28px;
   color: #000000;
+  
 }
 .wallet{
   font-weight: 500;
