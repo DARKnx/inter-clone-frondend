@@ -25,7 +25,14 @@ export const AuthContext = createContext<ContextData>({} as ContextData);
 
 export const AuthProvider: React.FC = ({children}) => {
 
-const [user, setUser] = useState<UserDto>({} as UserDto);
+const [user, setUser] = useState<UserDto>(() => {
+  const user = localStorage.getItem('@Inter:User');
+  if (user){
+    return JSON.parse(user);
+  }
+
+  return {} as UserDto
+});
 
 
 const userSignIn = async (userData: SignInData) => {
@@ -46,7 +53,8 @@ const userSignUp = async (userData: SignUpData) => {
 const getCurrentUser = async () => {
   const {data} = await me();
   setUser(data);
-  return data as UserDto;
+  localStorage.setItem('@Inter:User', JSON.stringify(user))
+  return data
 }
 
 

@@ -29,7 +29,8 @@ password
 const response =  await userSignIn(data)
 if (response.id){
 navigate('/dashboard');
-return console.log('usuario autorizado')
+
+
 } 
 console.log('usuario ou senha invalidos')
 alert('Usuário ou senha inválidos')

@@ -1,19 +1,40 @@
 
 import {Wrapper, Background, InputContainer, ButtonContainer} from './styles';
 import { useNavigate, Link } from 'react-router-dom';
+import {useState} from 'react'
 
 import background from '../../assets/images/background-login.jpg';
 import logoInter from '../../assets/images/Inter-orange.png';
-
+import useAuth from '../../hooks/useAuth'
 import Card from '../../components/Card';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 const SignUp = () => {
     const navigate = useNavigate();
+    const {userSignUp} = useAuth();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+   
+    
 
-    const handleToSingIn = () => {
-        navigate('/dashboard')
+    const handleToSingIn = async () => {
+
+        const data = {
+            email, 
+            password,
+            firstName,
+            lastName
+              }
+              const response =  await userSignUp(data)
+            if (response.id){
+            navigate('/dashboard');
+            
+            } 
+           
+
     }
     return (
         <Wrapper>
@@ -22,10 +43,10 @@ const SignUp = () => {
                 <img src={logoInter} width={172} height={61} alt="logo inter" />
 
                 <InputContainer>
-                    <Input placeholder="NOME"/>
-                    <Input placeholder="SOBRENOME"/>
-                    <Input placeholder="EMAIL"/>
-                    <Input placeholder="SENHA" type="password"/>
+                    <Input placeholder="NOME" value={firstName} onChange={e => setFirstName(e.target.value)}/>
+                    <Input placeholder="SOBRENOME" value={lastName} onChange={e => setLastName(e.target.value)}/>
+                    <Input placeholder='EMAIL'  value={email} onChange={e => setEmail(e.target.value)}/>
+                    <Input placeholder='SENHA' type="password" value={password} onChange={e => setPassword(e.target.value)}/>
                     <Input placeholder="CONFIRMAR SENHA" type="password"/>
                 </InputContainer>
 
