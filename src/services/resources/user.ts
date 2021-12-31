@@ -19,16 +19,24 @@ export interface userDto {
     accountNumber: number;
     accountDigit: number;
     wallet: number;
+    
 
 }
 
 export const signIn = async  (data: SignInData) => {
- return  api.post('/user/signin',  data);
+
+return api.post('/user/signin',  data).catch(e => {
+    return {data:{acessToken: '', status: 'error', message: e?.message}}
+  })
 
 }
 
 export const signUp = async  (data: SignUpData) => {
- return api.post('/user/signup',  data);
+
+ return api.post('/user/signup',  data).catch(e => {
+    return {data:{acessToken: '', status: 'error', message: e?.message}}
+  })
+
 }
 
 export const me = async  () => {

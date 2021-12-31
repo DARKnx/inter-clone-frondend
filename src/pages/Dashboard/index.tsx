@@ -1,63 +1,85 @@
-import  { useEffect, useState} from 'react'
-import { DashboardBackground, BodyContainer, InlineTitle, InlineContainer } from './styles'
+import { Link, useNavigate } from 'react-router-dom';
+import  { useEffect, useState} from 'react';
+import swal from 'sweetalert';
 
-import Card from '../../components/Card'
-import Input from '../../components/Input'
-import Header from '../../components/Header'
-import Button from '../../components/Button'
-import Statement from './Statament'
-import useAuth from '../../hooks/useAuth'
-import {pay, request} from '../../services/resources/pix'
+import { DashboardBackground, BodyContainer, InlineTitle, InlineContainer } from './styles';
+import {pay, request} from '../../services/resources/pix';
+import Header from '../../components/Header';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
+import useAuth from '../../hooks/useAuth';
+import Card from '../../components/Card';
+import Statement from './Statament';
+import Error from '../error';
 
-const Dashboard = () => {
+
+
+
+const Dashboard =  () => {
     
     const {user, getCurrentUser} = useAuth();
-    
+    const navigate = useNavigate();  
+   
     const [values, setValues] = useState('')
     const [key, setKey] = useState('')
     const [generatedKey, setGeneratedKey] = useState('')
+    var wallet = 0;
+
 
     useEffect(() => {
-
-        getCurrentUser()
-
+        getCurrentUser();
     }, [])
- 
-if (!user.firstName){
-    return (
-        <h1>404</h1>
-    )
-} 
+  
+    if (!user.firstName){
 
-var wallet = user.wallet;
+        navigate('/signin');  
+        return (<Error/>) 
+
+    } else {
+        wallet = user.wallet;
+    }
 
 
+    
+  
 
 
 const handlerNewPayment = async () => {
+    
+    if (values == "") return swal({text: "Valor de pagamento obrigatorio"});
+    if (isNaN(Number(values))) return swal({text: "Use apenas numeros"});
+    if (0 >= Number(values)) return swal({text: "Use valores acima de 1"});
 
-
- const {data} = await request(Number(values))   
- 
- if (data.copyPasteKey){
-    setGeneratedKey(data.copyPasteKey)
- }
-
-}
-const handlerReceivePix = async () => {
- 
-    try {
-        const {data} = await pay(key)
-        if (data.msg){
-            alert(data.msg)
-            return
-        }
-        alert("Não foi possivel fazer o pagamento")
-    }catch(e){
-        console.log(e)
-        alert("Não foi possivel fazer o pagamento")
+    const {data} = await request(Number(values));
+    
+    if (data.copyPasteKey){
+        setGeneratedKey(data.copyPasteKey)
+    } else {
+        return swal({text: "Ouve um problema ao gerar a chave PIX",icon: "info"});
     }
+
+
 }
+
+
+
+const handlerReceivePix = async () => {
+   
+    if (key == "") return swal({text: "Chave PIX obrigatoria"}); 
+
+      try {
+
+    const {data} = await pay(key);
+   window.location.reload()
+
+} catch(e){
+    swal({text: "Não foi possivel efetuar o pagamento", icon:'info'}); 
+}
+
+
+}
+
+
 
     return (
         

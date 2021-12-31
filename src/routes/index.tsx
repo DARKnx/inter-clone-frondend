@@ -6,8 +6,9 @@ import {
   import SignIn from '../pages/SignIn';
   import SignUp from '../pages/SignUp';
   import Dashboard from '../pages/Dashboard';
+  import Error from "../pages/error";
 
-  export const Router = ()=>{
+  export const Router = () => {
     return(
       <BrowserRouter>
         <Routes>
@@ -15,6 +16,8 @@ import {
           <Route path="/signin" element={<SignIn />}/>
           <Route path="/signup" element={<SignUp />}/>
           <Route path="/dashboard" element={<Dashboard />}/>
+          <Route path="/error" element={<Error />}/>
+          <Route path="*" element={<Error />}/>
         </Routes>
       </BrowserRouter>
     )

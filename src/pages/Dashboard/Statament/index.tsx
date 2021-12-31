@@ -6,13 +6,14 @@ import {transactions} from '../../../services/resources/pix'
 
 interface StatementItem {
     user: {
-        firstName: string,
+        firstname: string,
         lastName: string
     },
     value: number,
-    type: 'pay' | 'received',
+    type: 'paid' | 'received',
     updatedAt: Date
 }
+
 
 const StatementItem = ({user, value, type, updatedAt}: StatementItem) => {
     return (
@@ -24,7 +25,7 @@ const StatementItem = ({user, value, type, updatedAt}: StatementItem) => {
                 <p className="primary-color">
                     {value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
                 </p>
-                <p className="">{type === 'pay' ? `Pago a `: `Recebido de`} <strong>{user.firstName} {user.lastName}</strong></p>
+                <p className="">{type === 'paid' ? `Pago a `: `Recebido de`} <strong>{user.firstname} {user.lastName}</strong></p>
                 <p className="">{format(new Date(updatedAt), "dd/MM/yyyy 'às' HH:mm'h'")}</p>
             </StatementItemInfo>
         </StatementItemContainer>
@@ -48,7 +49,7 @@ const Statement = () => {
 
     return (
         <StatementContainer>
-            {statements.length > 0 && statements.map(statement => <StatementItem {...statement}/>)}
+            {statements.length > 0 && statements.slice(0, 4).map(statement => <StatementItem {...statement}/>)}
         </StatementContainer>
     )
 }

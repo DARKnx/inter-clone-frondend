@@ -3,12 +3,12 @@ import {HeaderContainer, HeaderWrapper, UserInfo} from './style';
 import { useEffect } from 'react'
 import logoInter from '../../assets/images/Inter-orange.png';
 import UserCircle from '../userCircle';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth' 
 
 const Header = () => {
    
-    const navigate = useNavigate();
+const navigate = useNavigate();
 const {user} = useAuth();
 
  
@@ -17,8 +17,8 @@ if (user.firstName != undefined) initials = user.firstName.substr(0, 1) + user.l
 
 
     const handleLogoff = () => {
-    
-        navigate('/signin')
+      localStorage.clear();
+      setTimeout(() => { navigate('/signin') }, 5000)
     }
    
     return (
